@@ -1,7 +1,7 @@
 === Db Cf7 Cpt ===
 Contributors: (this should be a list of wordpress.org userid's)
-Donate link: https://example.com/
-Tags: comments, spam
+Donate link: paypal.me/borovkovdaniil
+Tags: contact-form-7
 Requires at least: 4.5
 Tested up to: 4.9.8
 Stable tag: 0.1.0

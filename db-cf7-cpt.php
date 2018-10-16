@@ -12,6 +12,8 @@
  * @package         Db_Cf7_Cpt
  */
 // TODO: ajax taxonomies load
+//      TODO: add api url to get posts
+//      TODO: load html posts
 
 // Custom contact form 7 retreat select
 add_action('wpcf7_init', 'db_cf7_cpt_taxonomies_select');
@@ -28,12 +30,12 @@ function db_cf7_cpt_taxonomies_handler($tag)
     $atts          = wpcf7_format_atts($atts);
     $html          = '<select data-attr="db_cf7_taxonomie_select" ' . $atts . '>';
     $args          = array(
-        'taxonomy' => $tag->get_id_option(),
+        'taxonomy'   => $tag->get_id_option(),
         'hide_empty' => false,
     );
-    $retreats = get_terms( $args );
+    $retreats = get_terms($args);
     foreach ($retreats as $retreat):
-        $html .= '<option value="' . $retreat->name . '">' . $retreat->name . '</option>';
+        $html .= '<option value="' . $retreat->term_id . '">' . $retreat->name . '</option>';
     endforeach;
     $html .= '</select>';
     return $html;
@@ -44,6 +46,12 @@ function db_cf7_cpt_cpt_select()
 {
     wpcf7_add_form_tag('db_cpt_select', 'db_cf7_cpt_cpt_handler', array('name-attr' => true));
 }
+
+/**
+ * Add handler
+ * @param  [type] $tag [description]
+ * @return [type]      [description]
+ */
 function db_cf7_cpt_cpt_handler($tag)
 {
     $atts          = array();
@@ -65,4 +73,27 @@ function db_cf7_cpt_cpt_handler($tag)
     endforeach;
     $html .= '</select>';
     return $html;
+}
+
+/**
+ * Register scripts
+ * @return [type] [description]
+ */
+function db_db_cf7_cpt_register_scripts()
+{
+    wp_enqueue_script('db_db_cf7_cpt_script', plugin_dir_url(__FILE__) . 'script.js', array('jquery'));
+}
+
+add_action('init', 'db_db_cf7_cpt_register_scripts');
+
+add_action('rest_api_init', function () {
+    register_rest_route('db-df7-cpt/v1', 'log', array(
+        'methods'  => 'GET',
+        'callback' => 'db_cf7_cpt_get_posts',
+    ));
+});
+
+function db_cf7_cpt_get_posts($data)
+{
+    $message = $data['log'];
 }
