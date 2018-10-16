@@ -19,6 +19,7 @@
                         var posts = response.posts;
                         if (posts.length > 0) {
                             // add options to select
+                            posts_select.append($('<option></option>'));
                             posts.forEach(function(post) {
                                 var option = $('<option></option>').val(post.post_title).text(post.post_title);
                                 posts_select.append(option);
@@ -33,5 +34,10 @@
                 $('select[data-attr="db_cf7_cpt_select"]').hide();
             }
         });
+        var wpcf7Elm = document.querySelector('.wpcf7');
+        document.addEventListener('wpcf7mailsent', function(event) {
+            $('select[data-attr="db_cf7_cpt_select"]').hide();
+            $('select[data-attr="db_cf7_cpt_select"]').empty();
+        }, false);
     });
 })(jQuery);
