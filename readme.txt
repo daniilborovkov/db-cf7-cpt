@@ -24,6 +24,22 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 *db_taxonomies_select* генерирует выбор таксономии, *db_cpt_select* - выбор поста.
 
+пример для поля 
+
+```
+<label> Ваше имя (обязательно)
+    [text* your-name] </label>
+
+<label> Ваш e-mail (обязательно)
+    [email* your-email] </label>
+
+[db_taxonomies_select retreat class:form-control id:category]
+
+[db_cpt_select dpt class:form-control id:post]
+
+[submit "Отправить"]
+```
+
 
 == Installation ==
 

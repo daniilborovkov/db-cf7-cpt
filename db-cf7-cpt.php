@@ -35,7 +35,7 @@ function db_cf7_cpt_taxonomies_handler($tag)
     );
     $retreats = get_terms($args);
     foreach ($retreats as $retreat):
-        $html .= '<option value="' . $retreat->term_id . '">' . $retreat->name . '</option>';
+        $html .= '<option data-term="' . $retreat->term_id . '" value="' . $retreat->name . '">' . $retreat->name . '</option>';
     endforeach;
     $html .= '</select>';
     return $html;
