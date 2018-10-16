@@ -60,17 +60,17 @@ function db_cf7_cpt_cpt_handler($tag)
     $atts['id']    = $tag->get_id_option();
     $atts          = wpcf7_format_atts($atts);
     $html          = '<select data-attr="db_cf7_cpt_select" ' . $atts . '>';
-    $args          = array(
-        'post_type'      => $tag->get_id_option(),
-        'posts_per_page' => -1,
-    );
-    $retreats = get_posts($args);
-    foreach ($retreats as $retreat):
-        $retreat_id = $retreat->ID;
-        $slug       = $retreat->post_name;
-        $title      = get_the_title($retreat_id);
-        $html .= '<option value="' . $slug . '">' . $title . '</option>';
-    endforeach;
+    // $args          = array(
+    //     'post_type'      => $tag->get_id_option(),
+    //     'posts_per_page' => -1,
+    // );
+    // $retreats = get_posts($args);
+    // foreach ($retreats as $retreat):
+    //     $retreat_id = $retreat->ID;
+    //     $slug       = $retreat->post_name;
+    //     $title      = get_the_title($retreat_id);
+    //     $html .= '<option value="' . $slug . '">' . $title . '</option>';
+    // endforeach;
     $html .= '</select>';
     return $html;
 }
@@ -87,7 +87,7 @@ function db_db_cf7_cpt_register_scripts()
 add_action('init', 'db_db_cf7_cpt_register_scripts');
 
 add_action('rest_api_init', function () {
-    register_rest_route('db-df7-cpt/v1', 'log', array(
+    register_rest_route('db-df7-cpt/v1', 'posts', array(
         'methods'  => 'GET',
         'callback' => 'db_cf7_cpt_get_posts',
     ));
@@ -95,5 +95,18 @@ add_action('rest_api_init', function () {
 
 function db_cf7_cpt_get_posts($data)
 {
-    $message = $data['log'];
+    $args = array(
+        'post_type' => $data['post_type'],
+        'tax_query' => array(
+            array(
+                'taxonomy' => $data['taxonomy'],
+                'field'    => 'term_id',
+                'terms'    => $data['term'],
+            ),
+        ),
+    );
+
+    $query = new WP_Query($args);
+
+    return rest_ensure_response( $query);
 }
